@@ -862,6 +862,67 @@ function diagnostico(puntaje: number): { titulo: string; sub: string; puente: st
   };
 }
 
+const TITULOS_MAPAS = [
+  "Simple Present",
+  "Simple Past",
+  "Present Continuous",
+  "Past Continuous",
+  "Present Perfect",
+  "Comparativos",
+  "Should y Shouldn't",
+  "First Conditional",
+];
+
+const TOTAL_MAPAS_GRATIS = TITULOS_MAPAS.length;
+
+// Carrusel de una imagen a la vez, se mueve solo — muestra los mapas
+// completos y legibles en vez de una tira de miniaturas diminutas.
+function CarruselMapas() {
+  const [indice, setIndice] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setIndice((i) => (i + 1) % TOTAL_MAPAS_GRATIS), 2800);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="mt-3">
+      <div className="overflow-hidden rounded-xl border border-[#EAD9A0] bg-white">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${indice * 100}%)` }}
+        >
+          {Array.from({ length: TOTAL_MAPAS_GRATIS }, (_, i) => i + 1).map((n) => (
+            <img
+              key={n}
+              src={`/mapas-preview/mapa-${n}.png`}
+              alt={`Mapa mental de muestra: ${TITULOS_MAPAS[n - 1]}`}
+              loading={n === 1 ? "eager" : "lazy"}
+              className="aspect-[841/595] w-full flex-none object-contain"
+            />
+          ))}
+        </div>
+      </div>
+
+      <p className="mt-2 text-center font-ai-heading text-[11.5px] font-bold text-[#8A6A00]">
+        {indice + 1}/{TOTAL_MAPAS_GRATIS} · {TITULOS_MAPAS[indice]}
+      </p>
+
+      <div className="mt-1.5 flex items-center justify-center gap-1.5">
+        {Array.from({ length: TOTAL_MAPAS_GRATIS }, (_, i) => i).map((i) => (
+          <span
+            key={i}
+            className={
+              "h-1.5 rounded-full transition-all " +
+              (i === indice ? "w-4 bg-[#8A6A00]" : "w-1.5 bg-[#EAD9A0]")
+            }
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Oferta({
   puntajeTotal,
   nombre,
@@ -920,17 +981,7 @@ function Oferta({
         <p className="mt-2 text-[12.5px] leading-[1.4] text-[#6B5A1E]">
           Así se ven los Mapas Mentales por dentro — te regalamos 8, gratis y sin compromiso.
         </p>
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
-            <img
-              key={n}
-              src={`/mapas-preview/mapa-${n}.png`}
-              alt={`Mapa mental de muestra ${n}`}
-              loading="lazy"
-              className="h-[130px] w-auto flex-none rounded-lg border border-[#EAD9A0] object-cover shadow-[0_4px_10px_rgba(138,106,0,.15)]"
-            />
-          ))}
-        </div>
+        <CarruselMapas />
         <a
           href="/8-mapas-mentales-gratis.pdf"
           download
