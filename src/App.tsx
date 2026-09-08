@@ -827,11 +827,11 @@ export default function App() {
 type ItemOferta = { label: string; precio: number };
 
 const ITEMS_OFERTA: ItemOferta[] = [
-  { label: "Mapa Mental de Inglés (A1 → B2, 300 mapas)", precio: 29 },
-  { label: "Bono #1: 500 Frases Más Usadas", precio: 19 },
-  { label: "Bono #2: Plan de Estudio Diario", precio: 15 },
-  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 12 },
-  { label: "Bono #4: 150 Expresiones y Modismos", precio: 12 },
+  { label: "Mapa Mental de Inglés (A1 → B2, 300 mapas)", precio: 18 },
+  { label: "Bono #1: 500 Frases Más Usadas", precio: 11 },
+  { label: "Bono #2: Plan de Estudio Diario", precio: 9 },
+  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 6 },
+  { label: "Bono #4: 150 Expresiones y Modismos", precio: 6 },
 ];
 
 const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
