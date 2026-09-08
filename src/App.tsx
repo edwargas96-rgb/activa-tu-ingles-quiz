@@ -124,7 +124,7 @@ type MotivoId = "trabajo" | "viajar" | "migrar" | "negocios" | "estudios" | "per
 const MOTIVOS: { id: MotivoId; label: string; icon: typeof Briefcase }[] = [
   { id: "trabajo", label: "Conseguir un mejor trabajo o un aumento", icon: Briefcase },
   { id: "viajar", label: "Viajar sin depender de un traductor", icon: Plane },
-  { id: "migrar", label: "Emigrar a EE.UU. o Canadá", icon: Globe },
+  { id: "migrar", label: "Emigrar a Estados Unidos o Canadá", icon: Globe },
   { id: "negocios", label: "Ganar en dólares (remoto o freelance)", icon: DollarSign },
   { id: "estudios", label: "Estudiar en el extranjero", icon: GraduationCap },
   { id: "personal", label: "Sentirme más seguro/a y crecer", icon: Heart },
