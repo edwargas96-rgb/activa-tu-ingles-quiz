@@ -82,3 +82,23 @@ body {
     display: none;
   }
 }
+
+/* Vitrine de mapas mentales: desliza sin parar, como un escaparate. */
+.ai-vitrine {
+  animation: aiVitrine 22s linear infinite;
+}
+
+@keyframes aiVitrine {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-vitrine {
+    animation: none;
+  }
+}
