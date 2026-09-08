@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 
-const CHECKOUT_URL = "https://go.hotmart.com/D107506999L";
+const CHECKOUT_URL = "https://pay.hotmart.com/D107506999L";
 
 function FlagUS({ className = "" }: { className?: string }) {
   const stripes = [0, 1, 2, 3, 4, 5, 6];
