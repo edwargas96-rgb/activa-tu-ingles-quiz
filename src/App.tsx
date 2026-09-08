@@ -12,6 +12,7 @@ import {
   Heart,
   Lock,
   Plane,
+  ShieldCheck,
   Sparkles,
   Star,
   TrendingUp,
@@ -781,6 +782,18 @@ export default function App() {
   );
 }
 
+type ItemOferta = { label: string; precio: number };
+
+const ITEMS_OFERTA: ItemOferta[] = [
+  { label: "300 Mapas Mentales de Inglés (A1 → B2)", precio: 29 },
+  { label: "Bono #1: Frases Más Usadas", precio: 19 },
+  { label: "Bono #2: Jergas y Modismos", precio: 15 },
+  { label: "Bono #3: Plan de Estudio de 30 Días", precio: 15 },
+];
+
+const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
+const PRECIO_OFERTA = 9;
+
 function diagnostico(puntaje: number): { titulo: string; texto: string } {
   if (puntaje >= 5) {
     return {
@@ -858,46 +871,60 @@ function Oferta({
         </p>
       </div>
 
-      <div
-        className="mt-4 overflow-hidden rounded-2xl border-2 border-[#10204F] p-[18px]"
-        style={{ background: "linear-gradient(180deg, #FFFFFF, #F3F5FC)" }}
-      >
-        <p className="font-ai-heading text-[15px] font-extrabold leading-[1.25] text-[#10204F]">
-          {copia.cierre}
+      <p className="mt-4 text-center text-[13.5px] font-semibold leading-[1.4] text-[#374056]">
+        {copia.cierre}
+      </p>
+
+      <div className="mt-3 overflow-hidden rounded-2xl border-2 border-[#10204F] p-4">
+        <p className="text-center font-ai-heading text-[18px] font-extrabold leading-tight text-[#10204F]">
+          Resumen de tu compra
         </p>
-        <p className="mt-2 text-[13px] font-semibold text-[#374056]">Desbloquea el Kit completo:</p>
-        <ul className="mt-3 space-y-2 text-[13px] leading-[1.4] text-[#374056]">
-          {[
-            "300 Mapas Mentales de inglés (vocabulario visual, fácil de recordar)",
-            "Las frases más usadas en conversaciones reales",
-            "Jergas y modismos (slang) para sonar natural, no de libro",
-            "Plan de estudio de 30 días, paso a paso",
-          ].map((item) => (
-            <li key={item} className="flex items-start gap-2">
-              <Check className="mt-0.5 h-4 w-4 flex-none text-[#1E8E3E]" strokeWidth={3} />
-              {item}
+
+        <ul className="mt-4 space-y-2.5">
+          {ITEMS_OFERTA.map((item) => (
+            <li key={item.label} className="flex items-start gap-2">
+              <span className="mt-0.5 grid h-[18px] w-[18px] flex-none place-items-center rounded-[5px] bg-[#1E8E3E]">
+                <Check className="h-[12px] w-[12px] text-white" strokeWidth={3.5} />
+              </span>
+              <span className="min-w-0 flex-1 text-[12.5px] font-semibold leading-[1.35] text-[#20263A]">
+                {item.label}
+              </span>
+              <span className="flex-none whitespace-nowrap text-[12.5px] font-extrabold text-[#10204F]">
+                ${item.precio} USD
+              </span>
             </li>
           ))}
         </ul>
 
-        <div className="mt-4 flex items-end gap-2.5 border-t border-[#E1E4EF] pt-3.5">
-          <span className="text-[15px] text-[#9AA0B4] line-through">$27</span>
-          <span className="font-ai-heading text-[34px] font-extrabold leading-none text-[#10204F]">
-            $9
+        <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#E1E4EF] pt-3.5">
+          <span className="text-[13px] font-semibold text-[#6B7280]">Valor total:</span>
+          <span className="whitespace-nowrap text-[14px] text-[#9AA0B4] line-through">
+            ${VALOR_TOTAL_OFERTA} USD
           </span>
-          <span className="mb-1 text-[12.5px] font-semibold text-[#6B7280]">USD, pago único</span>
         </div>
-        <span className="mt-2 inline-block rounded-md bg-[#D8202F] px-2.5 py-1 font-ai-heading text-[11px] font-extrabold text-white">
-          −66% SOLO POR HOY
-        </span>
+
+        <div className="mt-2 flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5 text-center">
+          <span className="font-ai-heading text-[15px] font-extrabold text-[#10204F]">Hoy, solo:</span>
+          <span className="font-ai-heading text-[28px] font-extrabold leading-none text-[#D8202F]">
+            ${PRECIO_OFERTA} USD
+          </span>
+          <span className="text-[12px] font-semibold text-[#6B7280]">pago único</span>
+        </div>
+
+        <div className="mt-3 flex items-center justify-center gap-1.5 text-center">
+          <ShieldCheck className="h-4 w-4 flex-none text-[#10204F]" strokeWidth={2.2} />
+          <span className="font-ai-heading text-[12px] font-bold text-[#10204F]">
+            Garantía incondicional de 7 días
+          </span>
+        </div>
       </div>
 
       <a
         href={CHECKOUT_URL}
-        className="ai-btn ai-cta mt-5 flex min-h-[58px] w-full items-center justify-center gap-2 rounded-[15px] bg-[#D8202F] px-4 text-center font-ai-heading text-[16.5px] font-bold text-white shadow-[0_14px_30px_rgba(216,32,47,.35)] hover:bg-[#B91626]"
+        className="ai-btn ai-cta mt-4 flex min-h-[58px] w-full items-center justify-center gap-2 rounded-[15px] bg-[#D8202F] px-4 text-center font-ai-heading text-[16.5px] font-bold text-white shadow-[0_14px_30px_rgba(216,32,47,.35)] hover:bg-[#B91626]"
       >
         <Lock className="h-[17px] w-[17px]" strokeWidth={2.4} />
-        Activar mi inglés por $9
+        Quiero Adquirir Ahora
       </a>
       <p className="mt-3 text-center text-[11.5px] leading-[1.5] text-[#9A937D]">
         Acceso inmediato después del pago. Miles de personas en Latinoamérica ya lo están usando.
