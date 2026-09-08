@@ -130,32 +130,39 @@ const MOTIVOS: { id: MotivoId; label: string; icon: typeof Briefcase }[] = [
   { id: "personal", label: "Sentirme más seguro/a y crecer", icon: Heart },
 ];
 
-const COPIA_MOTIVO: Record<MotivoId, { dolor: string; oportunidad: string; cierre: string }> = {
+const COPIA_MOTIVO: Record<
+  MotivoId,
+  { sub: string; dolor: string; oportunidad: string; cierre: string }
+> = {
   trabajo: {
+    sub: "Ya tienes base. El inglés es lo único entre tú y el puesto que quieres — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
-      '¿Cuántas ofertas de trabajo pidieron "inglés intermedio" y las dejaste pasar? Cada mes que no avanzas, alguien con menos experiencia que tú se queda con el puesto solo por hablar inglés.',
+      "Cada ascenso, cada puesto mejor pagado y cada empresa grande pide inglés. Sin él, ves cómo el trabajo que querías se lo dan a otro que sí lo habla.",
     oportunidad:
-      "Los puestos bilingües pagan hasta 40% más en Latinoamérica. Dominar el inglés cotidiano en 30 días puede ser la diferencia entre seguir igual o subir de nivel en tu carrera.",
+      'Con inglés dejas de ser "uno más" en la fila. Calificas para los puestos que hoy ni te llegan — y para los aumentos que vienen con ellos.',
     cierre:
       "El Mapa Mental te da el vocabulario de entrevistas y ambiente laboral que la escuela nunca te enseñó.",
   },
   viajar: {
+    sub: "Ya tienes base. Te falta soltarte para moverte solo/a en cualquier país — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
-      "Imagina llegar a otro país y no poder pedir lo que necesitas, perderte por no entender un letrero, o depender de que alguien más hable por ti todo el viaje.",
+      "En el aeropuerto, el hotel o pidiendo comida dependes de señas, del traductor o de que alguien te rescate. El viaje que soñaste se vuelve estrés.",
     oportunidad:
-      "Con el inglés básico-intermedio bien puesto, viajas con seguridad, resuelves cualquier imprevisto tú mismo/a y disfrutas el viaje en vez de sobrevivirlo.",
+      "Con inglés te mueves por cualquier país con confianza: preguntas, negocias, conversas. El mundo deja de darte miedo y empieza a ser tuyo.",
     cierre:
       "Las frases más usadas del Kit son justo las que necesitas en aeropuertos, hoteles y restaurantes.",
   },
   migrar: {
+    sub: "Ya tienes base. Lo que falta es el inglés que te hace llegar listo/a — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
-      "El idioma es la barrera #1 para quien emigra — no es la visa, es no entender ni poder hacerte entender en el día a día.",
+      "Emigrar sin inglés es llegar y aceptar el primer trabajo que salga, cobrar menos y no poder defenderte en un trámite, un contrato o una emergencia.",
     oportunidad:
-      "Quien llega con inglés funcional se adapta 3 veces más rápido, consigue trabajo antes y no depende de nadie para lo básico.",
+      "Con inglés llegas preparado/a: entrevistas, papeleo, mejores empleos y una vida donde entiendes lo que pasa a tu alrededor desde el primer día.",
     cierre:
       "El Plan de Estudio de 30 días está pensado para dejarte funcional antes de dar el paso.",
   },
   negocios: {
+    sub: "Ya tienes base. Te falta el inglés que te abre el mercado en dólares — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "El inglés es el idioma de los clientes, las plataformas y los pagos en dólares. Sin él, sigues compitiendo solo en el mercado local.",
     oportunidad:
@@ -164,17 +171,19 @@ const COPIA_MOTIVO: Record<MotivoId, { dolor: string; oportunidad: string; cierr
       "Las jergas y frases de negocios del Kit te dan el vocabulario para sonar profesional desde el primer mensaje.",
   },
   estudios: {
+    sub: "Ya tienes base. El inglés es la llave de las becas y los intercambios — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
-      "Las mejores becas y universidades piden inglés certificado — sin él, ni siquiera puedes aplicar.",
+      "Las mejores universidades, becas e intercambios exigen inglés. Sin él, las puertas se cierran antes de que puedas siquiera aplicar.",
     oportunidad:
-      "Con una base sólida, un examen como el TOEFL o el IELTS deja de ser una montaña imposible.",
+      "Con inglés aplicas a becas, entiendes las clases y aprovechas de verdad la experiencia — en vez de perderte la mitad por el idioma.",
     cierre: "El Mapa Mental cubre el vocabulario académico que las apps genéricas no enseñan.",
   },
   personal: {
+    sub: "Ya tienes base. Falta la soltura que te quita el miedo a hablar — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
-      'Sentir que "no se te da el inglés" después de tantos intentos frustrados es agotador — y frena tu confianza en todo lo demás.',
+      'Cada vez que aparece el inglés —una reunión, un video, una conversación— sientes ese nudo de "no entiendo" y te quedas callado/a. Eso desgasta tu confianza.',
     oportunidad:
-      "Aprender con un método visual y sin gramática aburrida cambia esa historia — la confianza que ganas se nota en todo lo que haces.",
+      "Con inglés dejas de encogerte. Hablas, entiendes y participas sin miedo — y esa seguridad se nota en todo lo demás que haces.",
     cierre:
       "Este Kit está pensado para el método que sí funciona: visual, práctico y sin llenarte de reglas.",
   },
@@ -845,7 +854,7 @@ function Oferta({
       <Titulo>
         {nombre}, tu nivel es: {diag.titulo}
       </Titulo>
-      <Sub>{diag.texto}</Sub>
+      <Sub>{copia.sub}</Sub>
 
       <div className="mt-4 rounded-2xl border border-[#F3D2D2] bg-[#FDF1F1] p-[14px]">
         <div className="flex items-center gap-2">
