@@ -24,8 +24,7 @@ import {
   X,
 } from "lucide-react";
 
-// TODO: reemplaza por el link real de checkout (Cakto, Hotmart, etc.) cuando lo tengas.
-const CHECKOUT_URL = "https://pay.cakto.com.br/REEMPLAZAR-LINK-CHECKOUT";
+const CHECKOUT_URL = "https://go.hotmart.com/D107506999L";
 
 function FlagUS({ className = "" }: { className?: string }) {
   const stripes = [0, 1, 2, 3, 4, 5, 6];
