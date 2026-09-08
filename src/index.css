@@ -85,7 +85,7 @@ body {
 
 /* Vitrine de mapas mentales: desliza sin parar, como un escaparate. */
 .ai-vitrine {
-  animation: aiVitrine 22s linear infinite;
+  animation: aiVitrine 48s linear infinite;
 }
 
 @keyframes aiVitrine {
