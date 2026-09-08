@@ -953,7 +953,7 @@ function Oferta({
         <div className="flex items-center gap-2">
           <Gift className="h-4 w-4 flex-none text-[#8A6A00]" strokeWidth={2.2} />
           <p className="font-ai-heading text-[12.5px] font-extrabold uppercase tracking-[0.04em] text-[#8A6A00]">
-            Tu regalo por completar el quiz
+            Tu regalo de bienvenida
           </p>
         </div>
         <p className="mt-2 text-[12.5px] leading-[1.4] text-[#6B5A1E]">
@@ -961,12 +961,12 @@ function Oferta({
         </p>
         <CarruselMapas />
         <a
-          href="/8-mapas-mentales-gratis.pdf"
-          download
+          href="/regalo-de-bienvenida-activa-tu-ingles.pdf"
+          download="Regalo-de-Bienvenida-Activa-tu-Ingles.pdf"
           className="ai-btn mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl bg-[#10204F] px-4 text-center font-ai-heading text-[13.5px] font-bold text-white shadow-[0_8px_18px_rgba(16,32,79,.25)] hover:bg-[#0B1A40]"
         >
           <Download className="h-4 w-4" strokeWidth={2.4} />
-          Descargar mis 8 Mapas Gratis (PDF)
+          Descargar mi Regalo de Bienvenida (PDF)
         </a>
       </div>
 
