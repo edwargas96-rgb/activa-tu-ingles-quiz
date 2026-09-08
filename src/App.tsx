@@ -6,8 +6,10 @@ import {
   Check,
   Clock,
   DollarSign,
+  Download,
   FileText,
   Flame,
+  Gift,
   Globe,
   GraduationCap,
   Heart,
@@ -186,6 +188,14 @@ const NOMBRES = [
   "Sebastián",
   "Renata",
   "Julián",
+  "Gabriela",
+  "Ricardo",
+  "Natalia",
+  "Emilio",
+  "Isabella",
+  "Rodrigo",
+  "Melissa",
+  "Alejandro",
 ];
 
 const CIUDADES = [
@@ -202,6 +212,13 @@ const CIUDADES = [
   "Montevideo",
   "La Paz",
   "San José",
+  "Cali",
+  "Guadalajara",
+  "Caracas",
+  "Panamá",
+  "Asunción",
+  "Barranquilla",
+  "Puebla",
 ];
 
 const MENSAJES_FOMO = [
@@ -209,8 +226,14 @@ const MENSAJES_FOMO = [
   "empezó su Plan de Estudio de 30 días 📘",
   "está resolviendo el Nivel Difícil ahora mismo 💪",
   "activó su inglés con la oferta de $9 🎉",
-  "descargó las 300 frases más usadas ✅",
+  "descargó las 500 frases más usadas ✅",
   "acaba de terminar el quiz con nivel Intermedio ⭐",
+  "se descargó los 8 mapas mentales gratis 🎁",
+  "repasó los 100 Phrasal Verbs esta mañana 📖",
+  "consiguió los 150 modismos del Bono #4 🗣️",
+  "le dio 5/6 al quiz y activó su inglés 🚀",
+  "compartió el quiz con un amigo 👥",
+  "empezó su primer Mapa Mental hace 2 minutos ⏱️",
 ];
 
 function pick<T>(arr: T[]): T {
@@ -223,8 +246,15 @@ function useFomoToast() {
 
   useEffect(() => {
     let hideTimer: ReturnType<typeof setTimeout>;
+    let ultimo = "";
     const showOne = () => {
-      setTexto(`${pick(NOMBRES)}, de ${pick(CIUDADES)}, ${pick(MENSAJES_FOMO)}`);
+      let siguiente = `${pick(NOMBRES)}, de ${pick(CIUDADES)}, ${pick(MENSAJES_FOMO)}`;
+      // Evita mostrar el mismo texto dos veces seguidas.
+      if (siguiente === ultimo) {
+        siguiente = `${pick(NOMBRES)}, de ${pick(CIUDADES)}, ${pick(MENSAJES_FOMO)}`;
+      }
+      ultimo = siguiente;
+      setTexto(siguiente);
       setVisible(true);
       hideTimer = setTimeout(() => setVisible(false), 4600);
     };
@@ -361,14 +391,34 @@ function Boton({
   );
 }
 
+// Usa un deadline fijo en localStorage para que el contador no se reinicie
+// con un F5 — sigue corriendo desde donde iba, como un timer real.
 function useCountdown(segundosIniciales: number) {
-  const [segundos, setSegundos] = useState(segundosIniciales);
+  const [segundosRestantes, setSegundosRestantes] = useState(segundosIniciales);
+
   useEffect(() => {
-    const id = setInterval(() => setSegundos((s) => (s > 0 ? s - 1 : 0)), 1000);
+    const KEY = "ai-oferta-deadline";
+    let deadline: number;
+    try {
+      const guardado = localStorage.getItem(KEY);
+      deadline = guardado ? Number(guardado) : Date.now() + segundosIniciales * 1000;
+      if (!guardado) localStorage.setItem(KEY, String(deadline));
+    } catch {
+      deadline = Date.now() + segundosIniciales * 1000;
+    }
+
+    const tick = () => {
+      setSegundosRestantes(Math.max(0, Math.round((deadline - Date.now()) / 1000)));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
+    // Solo corre una vez al montar: el deadline ya quedó fijado arriba.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const mm = String(Math.floor(segundos / 60)).padStart(2, "0");
-  const ss = String(segundos % 60).padStart(2, "0");
+
+  const mm = String(Math.floor(segundosRestantes / 60)).padStart(2, "0");
+  const ss = String(segundosRestantes % 60).padStart(2, "0");
   return { mm, ss };
 }
 
@@ -777,10 +827,11 @@ export default function App() {
 type ItemOferta = { label: string; precio: number };
 
 const ITEMS_OFERTA: ItemOferta[] = [
-  { label: "300 Mapas Mentales de Inglés (A1 → B2)", precio: 29 },
-  { label: "Bono #1: Frases Más Usadas", precio: 19 },
-  { label: "Bono #2: Jergas y Modismos", precio: 15 },
-  { label: "Bono #3: Plan de Estudio de 30 Días", precio: 15 },
+  { label: "Mapa Mental de Inglés (A1 → B2, 300 mapas)", precio: 29 },
+  { label: "Bono #1: 500 Frases Más Usadas", precio: 19 },
+  { label: "Bono #2: Plan de Estudio Diario", precio: 15 },
+  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 12 },
+  { label: "Bono #4: 150 Expresiones y Modismos", precio: 12 },
 ];
 
 const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
@@ -857,6 +908,37 @@ function Oferta({
           </p>
         </div>
         <p className="mt-2 text-[13px] leading-[1.5] text-[#1E6B33]">{copia.oportunidad}</p>
+      </div>
+
+      <div className="mt-3 rounded-2xl border border-[#EAC94F] bg-[#FFFBEF] p-[14px]">
+        <div className="flex items-center gap-2">
+          <Gift className="h-4 w-4 flex-none text-[#8A6A00]" strokeWidth={2.2} />
+          <p className="font-ai-heading text-[12.5px] font-extrabold uppercase tracking-[0.04em] text-[#8A6A00]">
+            Tu regalo por completar el quiz
+          </p>
+        </div>
+        <p className="mt-2 text-[12.5px] leading-[1.4] text-[#6B5A1E]">
+          Así se ven los Mapas Mentales por dentro — te regalamos 8, gratis y sin compromiso.
+        </p>
+        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
+            <img
+              key={n}
+              src={`/mapas-preview/mapa-${n}.png`}
+              alt={`Mapa mental de muestra ${n}`}
+              loading="lazy"
+              className="h-[130px] w-auto flex-none rounded-lg border border-[#EAD9A0] object-cover shadow-[0_4px_10px_rgba(138,106,0,.15)]"
+            />
+          ))}
+        </div>
+        <a
+          href="/8-mapas-mentales-gratis.pdf"
+          download
+          className="ai-btn mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl bg-[#10204F] px-4 text-center font-ai-heading text-[13.5px] font-bold text-white shadow-[0_8px_18px_rgba(16,32,79,.25)] hover:bg-[#0B1A40]"
+        >
+          <Download className="h-4 w-4" strokeWidth={2.4} />
+          Descargar mis 8 Mapas Gratis (PDF)
+        </a>
       </div>
 
       <div className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-[#F3D2D2] bg-[#FDF1F1] px-4 py-2.5">
