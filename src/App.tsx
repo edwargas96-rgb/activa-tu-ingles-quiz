@@ -130,62 +130,42 @@ const MOTIVOS: { id: MotivoId; label: string; icon: typeof Briefcase }[] = [
   { id: "personal", label: "Sentirme más seguro/a y crecer", icon: Heart },
 ];
 
-const COPIA_MOTIVO: Record<
-  MotivoId,
-  { sub: string; dolor: string; oportunidad: string; cierre: string }
-> = {
+const COPIA_MOTIVO: Record<MotivoId, { dolor: string; oportunidad: string }> = {
   trabajo: {
-    sub: "Ya tienes base. El inglés es lo único entre tú y el puesto que quieres — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "Cada ascenso, cada puesto mejor pagado y cada empresa grande pide inglés. Sin él, ves cómo el trabajo que querías se lo dan a otro que sí lo habla.",
     oportunidad:
       'Con inglés dejas de ser "uno más" en la fila. Calificas para los puestos que hoy ni te llegan — y para los aumentos que vienen con ellos.',
-    cierre:
-      "El Mapa Mental te da el vocabulario de entrevistas y ambiente laboral que la escuela nunca te enseñó.",
   },
   viajar: {
-    sub: "Ya tienes base. Te falta soltarte para moverte solo/a en cualquier país — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "En el aeropuerto, el hotel o pidiendo comida dependes de señas, del traductor o de que alguien te rescate. El viaje que soñaste se vuelve estrés.",
     oportunidad:
       "Con inglés te mueves por cualquier país con confianza: preguntas, negocias, conversas. El mundo deja de darte miedo y empieza a ser tuyo.",
-    cierre:
-      "Las frases más usadas del Kit son justo las que necesitas en aeropuertos, hoteles y restaurantes.",
   },
   migrar: {
-    sub: "Ya tienes base. Lo que falta es el inglés que te hace llegar listo/a — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "Emigrar sin inglés es llegar y aceptar el primer trabajo que salga, cobrar menos y no poder defenderte en un trámite, un contrato o una emergencia.",
     oportunidad:
       "Con inglés llegas preparado/a: entrevistas, papeleo, mejores empleos y una vida donde entiendes lo que pasa a tu alrededor desde el primer día.",
-    cierre:
-      "El Plan de Estudio de 30 días está pensado para dejarte funcional antes de dar el paso.",
   },
   negocios: {
-    sub: "Ya tienes base. Te falta el inglés que te abre el mercado en dólares — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "El inglés es el idioma de los clientes, las plataformas y los pagos en dólares. Sin él, sigues compitiendo solo en el mercado local.",
     oportunidad:
       "Quien negocia en inglés accede a clientes y contratos que pagan en dólares — el doble o el triple de lo que se cobra en moneda local.",
-    cierre:
-      "Las jergas y frases de negocios del Kit te dan el vocabulario para sonar profesional desde el primer mensaje.",
   },
   estudios: {
-    sub: "Ya tienes base. El inglés es la llave de las becas y los intercambios — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       "Las mejores universidades, becas e intercambios exigen inglés. Sin él, las puertas se cierran antes de que puedas siquiera aplicar.",
     oportunidad:
       "Con inglés aplicas a becas, entiendes las clases y aprovechas de verdad la experiencia — en vez de perderte la mitad por el idioma.",
-    cierre: "El Mapa Mental cubre el vocabulario académico que las apps genéricas no enseñan.",
   },
   personal: {
-    sub: "Ya tienes base. Falta la soltura que te quita el miedo a hablar — el Mapa Mental te lleva ahí en 30 días.",
     dolor:
       'Cada vez que aparece el inglés —una reunión, un video, una conversación— sientes ese nudo de "no entiendo" y te quedas callado/a. Eso desgasta tu confianza.',
     oportunidad:
       "Con inglés dejas de encogerte. Hablas, entiendes y participas sin miedo — y esa seguridad se nota en todo lo demás que haces.",
-    cierre:
-      "Este Kit está pensado para el método que sí funciona: visual, práctico y sin llenarte de reglas.",
   },
 };
 
@@ -806,25 +786,28 @@ const ITEMS_OFERTA: ItemOferta[] = [
 const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
 const PRECIO_OFERTA = 9;
 
-function diagnostico(puntaje: number): { titulo: string; texto: string } {
+function diagnostico(puntaje: number): { titulo: string; sub: string; puente: string } {
   if (puntaje >= 5) {
     return {
-      titulo: "Nivel Básico-Alto 🚀",
-      texto:
-        "Ya tienes una base real. Te falta poco para sonar natural — el Mapa Mental te lleva ahí en 30 días.",
+      titulo: "Básico-Alto 🚀",
+      sub: "Ya tienes una base real. Te falta poco para sonar natural — el Mapa Mental te lleva ahí en 30 días.",
+      puente:
+        "Estás a un empujón. El Mapa Mental convierte lo que ya sabes en conversación fluida, sin trabarte.",
     };
   }
   if (puntaje >= 3) {
     return {
-      titulo: "Nivel Básico-Intermedio 📈",
-      texto:
-        "Entiendes lo esencial, pero te trabas con frases cotidianas. Justo lo que resuelve el Mapa Mental.",
+      titulo: "Básico en Construcción 💪",
+      sub: "Tienes fundamentos, pero con huecos que te frenan justo cuando más lo necesitas.",
+      puente:
+        "El Mapa Mental ordena lo que ya sabes a medias y llena los huecos — sin volver a empezar de cero.",
     };
   }
   return {
-    titulo: "Nivel Básico (punto de partida) 🌱",
-    texto:
-      "Perfecto momento para empezar con el método correcto — sin gramática aburrida, solo lo que se usa de verdad.",
+    titulo: "Principiante 🌱",
+    sub: "Estás empezando — y ese es justo el mejor momento para construir bien desde el inicio.",
+    puente:
+      "El Mapa Mental te da una ruta clara desde cero, sin la confusión de las apps que te dejan a medias.",
   };
 }
 
@@ -854,7 +837,7 @@ function Oferta({
       <Titulo>
         {nombre}, tu nivel es: {diag.titulo}
       </Titulo>
-      <Sub>{copia.sub}</Sub>
+      <Sub>{diag.sub}</Sub>
 
       <div className="mt-4 rounded-2xl border border-[#F3D2D2] bg-[#FDF1F1] p-[14px]">
         <div className="flex items-center gap-2">
@@ -884,7 +867,7 @@ function Oferta({
       </div>
 
       <p className="mt-4 text-center text-[13.5px] font-semibold leading-[1.4] text-[#374056]">
-        {copia.cierre}
+        {diag.puente}
       </p>
 
       <div className="mt-3 overflow-hidden rounded-2xl border-2 border-[#10204F] p-4">
