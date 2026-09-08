@@ -6,13 +6,17 @@ import {
   Check,
   Clock,
   DollarSign,
+  FileText,
   Flame,
   Globe,
   GraduationCap,
   Heart,
+  Infinity as InfinityIcon,
   Lock,
   Plane,
+  Printer,
   ShieldCheck,
+  Smartphone,
   Sparkles,
   Star,
   TrendingUp,
@@ -917,6 +921,37 @@ function Oferta({
             Garantía incondicional de 7 días
           </span>
         </div>
+      </div>
+
+      <div className="mt-3 rounded-2xl border border-[#DCE3F5] bg-[#F3F6FF] p-[14px]">
+        <p className="font-ai-heading text-[12px] font-extrabold uppercase tracking-[0.04em] text-[#10204F]">
+          ¿Cómo recibes tu material?
+        </p>
+        <ul className="mt-2.5 space-y-2">
+          {[
+            {
+              icon: FileText,
+              texto: "Recibes un documento digital con el enlace de acceso a todo el material.",
+            },
+            {
+              icon: InfinityIcon,
+              texto: "Acceso de por vida: págalo una sola vez y es tuyo para siempre.",
+            },
+            {
+              icon: Smartphone,
+              texto: "100% digital: lo abres desde el celular, tablet o computadora, cuando quieras.",
+            },
+            {
+              icon: Printer,
+              texto: "Si prefieres estudiar en papel, también lo puedes imprimir.",
+            },
+          ].map(({ icon: Icono, texto }) => (
+            <li key={texto} className="flex items-start gap-2">
+              <Icono className="mt-0.5 h-4 w-4 flex-none text-[#10204F]" strokeWidth={2.2} />
+              <span className="text-[12px] leading-[1.45] text-[#374056]">{texto}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <a
