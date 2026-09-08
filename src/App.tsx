@@ -391,22 +391,30 @@ function Boton({
   );
 }
 
-// Usa un deadline fijo en localStorage para que el contador no se reinicie
-// con un F5 — sigue corriendo desde donde iba, como un timer real.
+// El deadline se fija una sola vez (al iniciar el quiz, ver TIEMPO_TOTAL_QUIZ_SEGUNDOS
+// más abajo) y queda en localStorage — así el timer de la oferta refleja el tiempo
+// real que la persona lleva en todo el quiz, no solo desde que llegó a esa pantalla,
+// y no se reinicia con un F5.
+const DEADLINE_KEY = "ai-oferta-deadline";
+const TIEMPO_TOTAL_QUIZ_SEGUNDOS = 20 * 60;
+
+function asegurarDeadline(segundosIniciales: number): number {
+  try {
+    const guardado = localStorage.getItem(DEADLINE_KEY);
+    if (guardado) return Number(guardado);
+    const deadline = Date.now() + segundosIniciales * 1000;
+    localStorage.setItem(DEADLINE_KEY, String(deadline));
+    return deadline;
+  } catch {
+    return Date.now() + segundosIniciales * 1000;
+  }
+}
+
 function useCountdown(segundosIniciales: number) {
   const [segundosRestantes, setSegundosRestantes] = useState(segundosIniciales);
 
   useEffect(() => {
-    const KEY = "ai-oferta-deadline";
-    let deadline: number;
-    try {
-      const guardado = localStorage.getItem(KEY);
-      deadline = guardado ? Number(guardado) : Date.now() + segundosIniciales * 1000;
-      if (!guardado) localStorage.setItem(KEY, String(deadline));
-    } catch {
-      deadline = Date.now() + segundosIniciales * 1000;
-    }
-
+    const deadline = asegurarDeadline(segundosIniciales);
     const tick = () => {
       setSegundosRestantes(Math.max(0, Math.round((deadline - Date.now()) / 1000)));
     };
@@ -491,6 +499,13 @@ export default function App() {
     dificil: [],
   });
   const [videoConfirmado, setVideoConfirmado] = useState(false);
+
+  // Arranca el reloj de la oferta desde que la persona empieza el quiz
+  // (20 min en total), no desde que llega a la última pantalla — así el
+  // tiempo que tarda en el quiz también corre contra la oferta.
+  useEffect(() => {
+    asegurarDeadline(TIEMPO_TOTAL_QUIZ_SEGUNDOS);
+  }, []);
 
   const primerNombre = nombre.trim().split(/\s+/)[0] || "";
 
@@ -895,7 +910,7 @@ function Oferta({
   nombre: string;
   motivo: MotivoId;
 }) {
-  const { mm, ss } = useCountdown(15 * 60);
+  const { mm, ss } = useCountdown(TIEMPO_TOTAL_QUIZ_SEGUNDOS);
   const diag = diagnostico(puntajeTotal);
   const copia = COPIA_MOTIVO[motivo];
 
