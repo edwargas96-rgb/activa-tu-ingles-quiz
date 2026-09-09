@@ -842,15 +842,16 @@ export default function App() {
 type ItemOferta = { label: string; precio: number };
 
 const ITEMS_OFERTA: ItemOferta[] = [
-  { label: "Mapa Mental de Inglés (A1 → B2, 300 mapas)", precio: 18 },
-  { label: "Bono #1: 500 Frases Más Usadas", precio: 11 },
-  { label: "Bono #2: Plan de Estudio Diario", precio: 9 },
-  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 6 },
-  { label: "Bono #4: 150 Expresiones y Modismos", precio: 6 },
+  { label: "Colección de Mapas Mentales (A1 → B2)", precio: 29 },
+  { label: "Bono #1: 500 Frases Más Usadas", precio: 19 },
+  { label: "Bono #2: Plan Diario de Estudio", precio: 15 },
+  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 12 },
+  { label: "Bono #4: 150 Expresiones y Modismos", precio: 12 },
 ];
 
 const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
-const PRECIO_OFERTA = 9;
+const PRECIO_OFERTA = 7.99;
+const PRECIO_OFERTA_TEXTO = PRECIO_OFERTA.toFixed(2).replace(".", ",");
 
 function diagnostico(puntaje: number): { titulo: string; sub: string; puente: string } {
   if (puntaje >= 5) {
@@ -1012,7 +1013,7 @@ function Oferta({
         <div className="mt-2 flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5 text-center">
           <span className="font-ai-heading text-[15px] font-extrabold text-[#10204F]">Hoy, solo:</span>
           <span className="font-ai-heading text-[28px] font-extrabold leading-none text-[#D8202F]">
-            ${PRECIO_OFERTA} USD
+            ${PRECIO_OFERTA_TEXTO} USD
           </span>
           <span className="text-[12px] font-semibold text-[#6B7280]">pago único</span>
         </div>
@@ -1022,6 +1023,14 @@ function Oferta({
           <span className="font-ai-heading text-[12px] font-bold text-[#10204F]">
             Garantía incondicional de 7 días
           </span>
+        </div>
+
+        <div className="mt-3 rounded-xl border border-[#E1E4EF] bg-[#F7F8FC] p-[12px]">
+          <p className="text-[11.5px] leading-[1.5] text-[#4B5261]">
+            <strong className="font-ai-heading text-[#10204F]">¿Por qué tan barato?</strong> Porque es un
+            producto digital: lo creamos una vez y lo entregamos a miles sin costo de imprenta. Preferimos
+            que llegue a toda Latinoamérica a ${PRECIO_OFERTA_TEXTO} que venderlo caro a pocos.
+          </p>
         </div>
       </div>
 
@@ -1061,10 +1070,10 @@ function Oferta({
         className="ai-btn ai-cta mt-4 flex min-h-[58px] w-full items-center justify-center gap-2 rounded-[15px] bg-[#D8202F] px-4 text-center font-ai-heading text-[16.5px] font-bold text-white shadow-[0_14px_30px_rgba(216,32,47,.35)] hover:bg-[#B91626]"
       >
         <Lock className="h-[17px] w-[17px]" strokeWidth={2.4} />
-        Quiero Adquirir Ahora
+        Quiero empezar a hablar inglés
       </a>
       <p className="mt-3 text-center text-[11.5px] leading-[1.5] text-[#9A937D]">
-        Acceso inmediato después del pago. Miles de personas en Latinoamérica ya lo están usando.
+        Acceso inmediato · Garantía de 7 días · Pago único de ${PRECIO_OFERTA_TEXTO}
       </p>
     </Card>
   );
