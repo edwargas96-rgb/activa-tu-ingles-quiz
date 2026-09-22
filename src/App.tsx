@@ -55,7 +55,7 @@ function FlagUS({ className = "" }: { className?: string }) {
   );
 }
 
-type Nivel = "medio" | "dificil";
+type Nivel = "facil" | "medio" | "dificil";
 
 type Pregunta = {
   pregunta: string;
@@ -65,6 +65,26 @@ type Pregunta = {
 };
 
 const PREGUNTAS: Record<Nivel, Pregunta[]> = {
+  facil: [
+    {
+      pregunta: "¿Cómo se dice \"hola\" en inglés?",
+      opciones: ["Hello", "Goodbye", "Please", "Sorry"],
+      correcta: 0,
+      explicacion: '"Hello" es el saludo más básico en inglés — el primer paso de cualquier conversación.',
+    },
+    {
+      pregunta: '¿Qué significa "thank you"?',
+      opciones: ["Por favor", "De nada", "Gracias", "Lo siento"],
+      correcta: 2,
+      explicacion: '"Thank you" significa "gracias" — una de las expresiones más usadas en inglés.',
+    },
+    {
+      pregunta: '¿Cuál es el plural correcto de "book"?',
+      opciones: ["Books", "Bookes", "Bookies", "Book's"],
+      correcta: 0,
+      explicacion: 'La mayoría de los plurales en inglés se forman agregando una "s": book → books.',
+    },
+  ],
   medio: [
     {
       pregunta: "¿Cómo pides algo de forma cortés en inglés?",
@@ -131,6 +151,15 @@ const MOTIVOS: { id: MotivoId; label: string; icon: typeof Briefcase }[] = [
   { id: "estudios", label: "Estudiar en el extranjero", icon: GraduationCap },
   { id: "personal", label: "Sentirme más seguro/a y crecer", icon: Heart },
 ];
+
+const METAS_MOTIVO: Record<MotivoId, string> = {
+  trabajo: "ese mejor trabajo o ese aumento que quieres",
+  viajar: "viajar sin depender de nadie",
+  migrar: "prepararte para emigrar con seguridad",
+  negocios: "empezar a ganar en dólares",
+  estudios: "estudiar en el extranjero",
+  personal: "hablar con seguridad, sin trabarte",
+};
 
 const COPIA_MOTIVO: Record<MotivoId, { dolor: string; oportunidad: string }> = {
   trabajo: {
@@ -439,8 +468,18 @@ const MENSAJES_CARGA = [
   "Preparando tu diagnóstico...",
 ];
 
+const CURIOSIDADES = [
+  "El inglés es el idioma oficial de los negocios en más de 100 países.",
+  "Casi el 60% de todo el contenido de internet está en inglés.",
+  "Hablar inglés puede aumentar tus ingresos hasta en un 30%, según varios estudios.",
+  "El inglés es el idioma más usado en la ciencia, la tecnología y la aviación a nivel mundial.",
+  "1 de cada 4 personas en el mundo puede comunicarse en inglés.",
+  "El inglés es el idioma oficial en más países que cualquier otro idioma del planeta.",
+];
+
 function Cargando({ nivel, onCompleto }: { nivel: Nivel; onCompleto: () => void }) {
   const [progreso, setProgreso] = useState(0);
+  const curiosidad = useMemo(() => pick(CURIOSIDADES), []);
 
   useEffect(() => {
     const inicio = Date.now();
@@ -470,9 +509,11 @@ function Cargando({ nivel, onCompleto }: { nivel: Nivel; onCompleto: () => void 
           </span>
         </span>
         <p className="mt-4 font-ai-heading text-[16px] font-bold text-[#10204F]">
-          {nivel === "medio"
-            ? "Calculando tu resultado del Nivel Medio..."
-            : "Generando tu diagnóstico final..."}
+          {nivel === "facil"
+            ? "Analizando tus primeras respuestas..."
+            : nivel === "medio"
+              ? "Calculando tu resultado del Nivel Medio..."
+              : "Generando tu diagnóstico final..."}
         </p>
         <p className="mt-1.5 text-[13px] text-[#6B7280]">{mensaje}</p>
         <div className="mt-4 h-[7px] w-full overflow-hidden rounded-full bg-[#EFEBDD]">
@@ -481,6 +522,13 @@ function Cargando({ nivel, onCompleto }: { nivel: Nivel; onCompleto: () => void 
             style={{ width: `${progreso}%` }}
           />
         </div>
+        <div className="mt-4 flex items-start gap-2 rounded-xl border border-[#E7E1D2] bg-[#FBF8EF] p-3 text-left">
+          <Sparkles className="mt-0.5 h-4 w-4 flex-none text-[#F4B400]" strokeWidth={2.2} />
+          <p className="text-[11.5px] leading-[1.4] text-[#4B5261]">
+            <strong className="font-ai-heading text-[#10204F]">¿Sabías que...?</strong>{" "}
+            {curiosidad}
+          </p>
+        </div>
         <p className="mt-4 text-[11.5px] text-[#9A937D]">No cierres esta pantalla...</p>
       </div>
     </Card>
@@ -488,17 +536,17 @@ function Cargando({ nivel, onCompleto }: { nivel: Nivel; onCompleto: () => void 
 }
 
 export default function App() {
-  const [fase, setFase] = useState<Fase>("datos");
+  const [fase, setFase] = useState<Fase>("quiz");
   const [nombre, setNombre] = useState("");
   const [motivo, setMotivo] = useState<MotivoId | null>(null);
-  const [nivel, setNivel] = useState<Nivel>("medio");
+  const [nivel, setNivel] = useState<Nivel>("facil");
   const [indice, setIndice] = useState(0);
   const [seleccion, setSeleccion] = useState<number | null>(null);
   const [respuestas, setRespuestas] = useState<Record<Nivel, boolean[]>>({
+    facil: [],
     medio: [],
     dificil: [],
   });
-  const [videoConfirmado, setVideoConfirmado] = useState(false);
 
   // Arranca el reloj de la oferta desde que la persona empieza el quiz
   // (20 min en total), no desde que llega a la última pantalla — así el
@@ -534,6 +582,13 @@ export default function App() {
   }
 
   function siguienteNivel() {
+    if (nivel === "facil") {
+      setNivel("medio");
+      setIndice(0);
+      setSeleccion(null);
+      setFase("quiz");
+      return;
+    }
     if (nivel === "medio") {
       setNivel("dificil");
       setIndice(0);
@@ -545,6 +600,7 @@ export default function App() {
   }
 
   const aciertosNivel = respuestas[nivel].filter(Boolean).length;
+  const mostrarProgreso = fase !== "datos" && nivel !== "facil";
 
   return (
     <main
@@ -560,7 +616,7 @@ export default function App() {
         <div className="px-5 pb-24 pt-4">
           <div className="flex items-center justify-between">
             <Logo />
-            {fase !== "intro" && fase !== "datos" && (
+            {mostrarProgreso && (
               <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1.5 font-ai-heading text-[12px] font-extrabold text-[#10204F] shadow-[0_4px_10px_rgba(16,32,79,.12)]">
                 <Star className="h-3.5 w-3.5 text-[#F4B400]" fill="currentColor" strokeWidth={0} />
                 {puntajeTotal}
@@ -568,7 +624,7 @@ export default function App() {
             )}
           </div>
 
-          {fase !== "datos" && (
+          {mostrarProgreso && (
             <div className="mt-4 flex items-center justify-center gap-2">
               <LevelPill label="FÁCIL" state="hecho" />
               <span className="h-px w-4 bg-[#E4DFCC]" />
@@ -655,7 +711,7 @@ export default function App() {
             </Card>
           )}
 
-          {/* INTRO — recapitula el nivel fácil (video) y presenta el nivel medio */}
+          {/* INTRO — feedback real del nivel fácil (ya con nombre y motivo) y presenta el nivel medio */}
           {fase === "intro" && (
             <Card>
               <div className="flex items-center gap-2">
@@ -666,10 +722,20 @@ export default function App() {
                   Nivel Fácil superado
                 </p>
               </div>
-              <Titulo>¡Bien hecho, {primerNombre}! Ya diste el primer paso 🎉</Titulo>
+              <Titulo>
+                {aciertosNivel >= 2
+                  ? `¡Vas muy bien, ${primerNombre}! Ya diste el primer paso 🎉`
+                  : `¡Ya diste el primer paso, ${primerNombre}! 🎉`}
+              </Titulo>
               <Sub>
-                Respondiste las 3 preguntas básicas del video. Ahora vamos a subir la dificultad
-                para saber tu nivel real de inglés.
+                Respondiste {aciertosNivel}/{totalPreguntasNivel} correctas en el calentamiento.{" "}
+                {aciertosNivel >= 2
+                  ? `Nada mal — pero esto era solo lo básico. Ahora vamos a ver qué tan lejos estás de ${
+                      motivo ? METAS_MOTIVO[motivo] : "lo que quieres lograr"
+                    }.`
+                  : `Y está bien, era solo el calentamiento. Ahora vamos a ver tu nivel real — así sabes exactamente qué te está frenando para ${
+                      motivo ? METAS_MOTIVO[motivo] : "lo que quieres lograr"
+                    }.`}
               </Sub>
 
               <div className="mt-4 rounded-2xl border border-[#EEE7D3] bg-[#FBF8EF] p-4">
@@ -692,19 +758,10 @@ export default function App() {
                 </ul>
               </div>
 
-              <Boton
-                onClick={() => {
-                  setVideoConfirmado(true);
-                  setFase("quiz");
-                }}
-              >
-                Empezar Nivel Medio
-              </Boton>
-              {videoConfirmado === false && (
-                <p className="mt-3 text-center text-[11.5px] text-[#9A937D]">
-                  Te toma menos de 2 minutos.
-                </p>
-              )}
+              <Boton onClick={siguienteNivel}>Empezar Nivel Medio</Boton>
+              <p className="mt-3 text-center text-[11.5px] text-[#9A937D]">
+                Te toma menos de 2 minutos.
+              </p>
             </Card>
           )}
 
@@ -712,8 +769,8 @@ export default function App() {
           {fase === "quiz" && (
             <Card>
               <p className="font-ai-heading text-[11.5px] font-bold uppercase tracking-[0.06em] text-[#9A937D]">
-                Nivel {nivel === "medio" ? "Medio" : "Difícil"} · Pregunta {indice + 1} de{" "}
-                {totalPreguntasNivel}
+                Nivel {nivel === "facil" ? "Fácil" : nivel === "medio" ? "Medio" : "Difícil"} ·
+                Pregunta {indice + 1} de {totalPreguntasNivel}
               </p>
               <h2 className="mt-1.5 font-ai-heading text-[19px] font-extrabold leading-[1.3] text-[#10204F]">
                 {preguntaActual.pregunta}
@@ -785,7 +842,10 @@ export default function App() {
 
           {/* LOADING — genera expectativa antes de revelar el resultado */}
           {fase === "cargando" && (
-            <Cargando nivel={nivel} onCompleto={() => setFase("nivel-feedback")} />
+            <Cargando
+              nivel={nivel}
+              onCompleto={() => setFase(nivel === "facil" ? "datos" : "nivel-feedback")}
+            />
           )}
 
           {/* FEEDBACK DE FIN DE NIVEL */}
