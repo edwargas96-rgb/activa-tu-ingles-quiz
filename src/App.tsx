@@ -561,7 +561,10 @@ export default function App() {
   const totalPreguntasNivel = PREGUNTAS[nivel].length;
 
   const puntajeTotal = useMemo(
-    () => respuestas.medio.filter(Boolean).length + respuestas.dificil.filter(Boolean).length,
+    () =>
+      respuestas.facil.filter(Boolean).length +
+      respuestas.medio.filter(Boolean).length +
+      respuestas.dificil.filter(Boolean).length,
     [respuestas],
   );
 
@@ -914,7 +917,7 @@ const PRECIO_OFERTA = 7.99;
 const PRECIO_OFERTA_TEXTO = PRECIO_OFERTA.toFixed(2).replace(".", ",");
 
 function diagnostico(puntaje: number): { titulo: string; sub: string; puente: string } {
-  if (puntaje >= 5) {
+  if (puntaje >= 7) {
     return {
       titulo: "Básico-Alto 🚀",
       sub: "Ya tienes una base real. Te falta poco para sonar natural — el Mapa Mental te lleva ahí en 30 días.",
@@ -922,7 +925,7 @@ function diagnostico(puntaje: number): { titulo: string; sub: string; puente: st
         "Estás a un empujón. El Mapa Mental convierte lo que ya sabes en conversación fluida, sin trabarte.",
     };
   }
-  if (puntaje >= 3) {
+  if (puntaje >= 4) {
     return {
       titulo: "Básico en Construcción 💪",
       sub: "Tienes fundamentos, pero con huecos que te frenan justo cuando más lo necesitas.",
@@ -982,7 +985,7 @@ function Oferta({
           <GraduationCap className="h-[18px] w-[18px]" strokeWidth={2.2} />
         </span>
         <p className="font-ai-heading text-[12px] font-bold uppercase tracking-[0.06em] text-[#10204F]">
-          Tu resultado: {puntajeTotal}/6
+          Tu resultado: {puntajeTotal}/9
         </p>
       </div>
       <Titulo>
