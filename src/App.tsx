@@ -430,7 +430,10 @@ const TIEMPO_TOTAL_QUIZ_SEGUNDOS = 20 * 60;
 function asegurarDeadline(segundosIniciales: number): number {
   try {
     const guardado = localStorage.getItem(DEADLINE_KEY);
-    if (guardado) return Number(guardado);
+    // Si ya existe un plazo guardado pero ya venció, se trata como una
+    // visita nueva y se genera uno fresco — así no se queda pegado en
+    // 00:00 para siempre en una visita de regreso.
+    if (guardado && Number(guardado) > Date.now()) return Number(guardado);
     const deadline = Date.now() + segundosIniciales * 1000;
     localStorage.setItem(DEADLINE_KEY, String(deadline));
     return deadline;
