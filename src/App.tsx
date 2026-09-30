@@ -28,6 +28,13 @@ import {
 
 const CHECKOUT_URL = "https://pay.hotmart.com/D107506999L";
 
+// El Meta Pixel se carga en index.html; esta función solo evita que la app
+// explote si por algún motivo fbq no está disponible (bloqueador de anuncios, etc).
+function fbqTrack(evento: string) {
+  const fbq = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
+  fbq?.("track", evento);
+}
+
 function FlagUS({ className = "" }: { className?: string }) {
   const stripes = [0, 1, 2, 3, 4, 5, 6];
   return (
@@ -981,6 +988,12 @@ function Oferta({
   const diag = diagnostico(puntajeTotal);
   const copia = COPIA_MOTIVO[motivo];
 
+  useEffect(() => {
+    fbqTrack("Lead");
+    // Solo se dispara una vez, al llegar a la pantalla de oferta.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Card>
       <div className="flex items-center gap-2">
@@ -1133,6 +1146,7 @@ function Oferta({
 
       <a
         href={CHECKOUT_URL}
+        onClick={() => fbqTrack("InitiateCheckout")}
         className="ai-btn ai-cta mt-4 flex min-h-[58px] w-full items-center justify-center gap-2 rounded-[15px] bg-[#D8202F] px-4 text-center font-ai-heading text-[16.5px] font-bold text-white shadow-[0_14px_30px_rgba(216,32,47,.35)] hover:bg-[#B91626]"
       >
         <Lock className="h-[17px] w-[17px]" strokeWidth={2.4} />
