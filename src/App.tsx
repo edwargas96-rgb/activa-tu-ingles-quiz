@@ -26,8 +26,7 @@ import {
   X,
 } from "lucide-react";
 
-const CHECKOUT_URL =
-  "https://pay.hotmart.com/D107506999L?off=yjb539hf&checkoutMode=10&bid=1790809355907";
+const CHECKOUT_URL = "https://pay.hotmart.com/D107506999L?checkoutMode=10";
 
 // El Meta Pixel se carga en index.html; esta función solo evita que la app
 // explote si por algún motivo fbq no está disponible (bloqueador de anuncios, etc).
