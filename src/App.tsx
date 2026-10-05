@@ -915,15 +915,15 @@ export default function App() {
 type ItemOferta = { label: string; precio: number };
 
 const ITEMS_OFERTA: ItemOferta[] = [
-  { label: "Colección de Mapas Mentales (A1 → B2)", precio: 169 },
-  { label: "Bono #1: 500 Frases Más Usadas", precio: 109 },
-  { label: "Bono #2: Plan Diario de Estudio", precio: 89 },
-  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 69 },
-  { label: "Bono #4: 150 Expresiones y Modismos", precio: 69 },
+  { label: "Colección de Mapas Mentales (A1 → B2)", precio: 29 },
+  { label: "Bono #1: 500 Frases Más Usadas", precio: 19 },
+  { label: "Bono #2: Plan Diario de Estudio", precio: 15 },
+  { label: "Bono #3: 100 Phrasal Verbs Esenciales", precio: 12 },
+  { label: "Bono #4: 150 Expresiones y Modismos", precio: 12 },
 ];
 
 const VALOR_TOTAL_OFERTA = ITEMS_OFERTA.reduce((suma, item) => suma + item.precio, 0);
-const PRECIO_OFERTA = 153.99;
+const PRECIO_OFERTA = 7.99;
 const PRECIO_OFERTA_TEXTO = PRECIO_OFERTA.toFixed(2).replace(".", ",");
 
 function diagnostico(puntaje: number): { titulo: string; sub: string; puente: string } {
@@ -1076,7 +1076,7 @@ function Oferta({
                 {item.label}
               </span>
               <span className="flex-none whitespace-nowrap text-[12.5px] font-extrabold text-[#10204F]">
-                ${item.precio} MXN
+                ${item.precio} USD
               </span>
             </li>
           ))}
@@ -1085,14 +1085,14 @@ function Oferta({
         <div className="mt-4 flex items-center justify-between gap-2 border-t border-[#E1E4EF] pt-3.5">
           <span className="text-[13px] font-semibold text-[#6B7280]">Valor total:</span>
           <span className="whitespace-nowrap text-[14px] text-[#9AA0B4] line-through">
-            ${VALOR_TOTAL_OFERTA} MXN
+            ${VALOR_TOTAL_OFERTA} USD
           </span>
         </div>
 
         <div className="mt-2 flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5 text-center">
           <span className="font-ai-heading text-[15px] font-extrabold text-[#10204F]">Hoy, solo:</span>
           <span className="font-ai-heading text-[28px] font-extrabold leading-none text-[#D8202F]">
-            ${PRECIO_OFERTA_TEXTO} MXN
+            ${PRECIO_OFERTA_TEXTO} USD
           </span>
           <span className="text-[12px] font-semibold text-[#6B7280]">pago único</span>
         </div>
